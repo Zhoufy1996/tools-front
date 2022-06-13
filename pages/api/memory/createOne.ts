@@ -9,7 +9,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
     headers: { 'Content-Type': 'application/json' },
   });
 
-  log(res);
-
   return response.status(res.status).json(await res.json());
 }
