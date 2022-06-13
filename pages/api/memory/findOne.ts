@@ -5,9 +5,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
   const { code } = request.query;
   const res = await fetch(`${process.env.SERVER_BASE_URL}memory/findOne`, {
     method: 'POST',
-    body: JSON.stringify({
-      code: code[0],
-    }),
+    body: request.body,
     headers: { 'Content-Type': 'application/json' },
   });
 

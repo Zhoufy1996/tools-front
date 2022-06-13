@@ -8,7 +8,14 @@ interface MemoryReaderProps {
 }
 
 const MemoryReader = ({ code }: MemoryReaderProps) => {
-  const { data, error } = useSWR<MemoryRecord>(`/api/memory/findOne/${code}`, fetcher);
+  const { data, error } = useSWR<MemoryRecord>(`/api/memory/findOne/${code}`, () =>
+    fetcher('/api/memory/findOne', {
+      method: 'post',
+      body: JSON.stringify({
+        code,
+      }),
+    })
+  );
   if (error) {
     return <div>{error.message}</div>;
   }
