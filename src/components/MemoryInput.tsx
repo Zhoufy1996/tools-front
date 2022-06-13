@@ -1,6 +1,6 @@
 import { Button, Card, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
 import { useState } from 'react';
-import { createOneMemory } from '../services/memory';
+import { fetcher } from '../utils/fetcher';
 
 interface MemoryInputProps {
   successCallback: (v: string) => void;
@@ -15,8 +15,13 @@ export const MemoryInput = ({ successCallback }: MemoryInputProps) => {
 
   const createContent = async () => {
     try {
-      const res = await createOneMemory(content);
-      successCallback(res);
+      const res = await fetcher<{ code: string }>('/api/memory/createOne', {
+        method: 'post',
+        body: JSON.stringify({
+          content,
+        }),
+      });
+      successCallback(res.code);
     } catch (e) {
       console.log(e);
     }

@@ -1,18 +1,18 @@
 import useSWR from 'swr';
-import { findOneMemory } from '../services/memory';
 import { Button, Card, CardActions, CardContent, CardHeader, TextField, Typography } from '@mui/material';
 import copy from 'copy-to-clipboard';
+import { fetcher } from '../utils/fetcher';
 
 interface MemoryReaderProps {
   code: string;
 }
 
 const MemoryReader = ({ code }: MemoryReaderProps) => {
-  const { data, error } = useSWR(`memory/findOne/${code}`, () => findOneMemory(code));
-
+  const { data, error } = useSWR<MemoryRecord>(`/api/memory/findOne/${code}`, fetcher);
   if (error) {
     return <div>{error.message}</div>;
   }
+
   if (data) {
     return (
       <Card sx={{ width: 300 }}>

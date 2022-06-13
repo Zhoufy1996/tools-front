@@ -1,10 +1,8 @@
-import '../../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { RecoilRoot } from 'recoil';
-import '../assets/styles/global.css';
+import '../src/assets/styles/global.css';
 import { ThemeProvider } from '@emotion/react';
-import theme from '../utils/theme';
+import theme from '../src/utils/theme';
 import { CssBaseline } from '@mui/material';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -19,9 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <RecoilRoot>
-          <Component {...pageProps} />
-        </RecoilRoot>
+        <Component {...pageProps} />
       </ThemeProvider>
     </>
   );
