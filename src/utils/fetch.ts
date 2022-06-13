@@ -1,4 +1,5 @@
-export const baseUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+// export const baseUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+export const baseUrl = '/api/';
 
 export const request = async <T>(url: string, config: RequestInit): Promise<T> => {
   let res;

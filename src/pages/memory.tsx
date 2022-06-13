@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import MemoryInput from '../components/MemoryInput';
 import MemoryReader from '../components/MemoryReader';
 
@@ -20,6 +20,12 @@ const Memory = () => {
   const successCreateCallback = useCallback((v: string) => {
     setType('read');
     setCode(v);
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/helloworld').then((res) => {
+      console.log(res);
+    });
   }, []);
 
   return (
