@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
   if (request.method?.toLowerCase() === 'get') {
     const { code } = request.query;
-    const res = await fetch(`${process.env.SERVER_BASE_URL}memory/${code[0]}`, {
+    const res = await fetch(`${process.env.SERVER_BASE_URL}memory/${code}`, {
       method: 'get',
       //   headers: { 'Content-Type': 'application/json' },
     });

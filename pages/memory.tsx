@@ -2,6 +2,7 @@ import { Box, Button, ButtonGroup, Container, TextField } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import MemoryInput from '../src/components/MemoryInput';
 import MemoryReader from '../src/components/MemoryReader';
+import { fetcher } from '../src/utils/fetcher';
 
 const Memory = () => {
   const [value, setValue] = useState('');
@@ -20,6 +21,10 @@ const Memory = () => {
   const successCreateCallback = useCallback((v: string) => {
     setType('read');
     setCode(v);
+  }, []);
+
+  useEffect(() => {
+    fetcher('/api/esjzone/1581942520');
   }, []);
 
   return (
