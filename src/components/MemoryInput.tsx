@@ -15,7 +15,7 @@ export const MemoryInput = ({ successCallback }: MemoryInputProps) => {
 
   const createContent = async () => {
     try {
-      const res = await fetcher<{ code: string }>('/api/memory/createOne', {
+      const res = await fetcher<{ code: string }>('/api/memory', {
         method: 'post',
         body: JSON.stringify({
           content,
@@ -28,17 +28,20 @@ export const MemoryInput = ({ successCallback }: MemoryInputProps) => {
   };
 
   return (
-    <Card sx={{ width: 300 }}>
-      <CardHeader title="创建文本" />
-      <CardContent sx={{ height: 300 }}>
+    <Card sx={{ width: '100%' }}>
+      <CardHeader title="新建文本" />
+      <CardContent sx={{ height: 200 }}>
         <TextField
           id="memory"
-          minRows={8}
-          maxRows={8}
-          label="记忆文本"
+          minRows={6}
+          maxRows={6}
+          label="文本"
           value={content}
           onChange={handleChange}
           multiline
+          sx={{
+            width: '100%',
+          }}
         />
       </CardContent>
       <CardActions>

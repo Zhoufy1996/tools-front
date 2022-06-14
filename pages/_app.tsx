@@ -4,6 +4,7 @@ import '../src/assets/styles/global.css';
 import { ThemeProvider } from '@emotion/react';
 import theme from '../src/utils/theme';
 import { CssBaseline } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,8 +17,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#317EFB" />
       </Head>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Component {...pageProps} />
+        <SnackbarProvider maxSnack={3}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </SnackbarProvider>
       </ThemeProvider>
     </>
   );

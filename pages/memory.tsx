@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material';
+import { Box, Button, ButtonGroup, Container, TextField } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import MemoryInput from '../src/components/MemoryInput';
 import MemoryReader from '../src/components/MemoryReader';
@@ -23,24 +23,26 @@ const Memory = () => {
   }, []);
 
   return (
-    <div>
-      <div>
-        <TextField size="small" onChange={handleChange} label={value} />
-        <Button disabled={value === ''} onClick={addCode} size="small" variant="contained">
-          读取
-        </Button>
-        <Button
-          onClick={() => {
-            setType('edit');
-          }}
-          size="small"
-          variant="contained"
-        >
-          创建
-        </Button>
-      </div>
-      {type === 'edit' ? <MemoryInput successCallback={successCreateCallback} /> : <MemoryReader code={code} />}
-    </div>
+    <Container sx={{ p: 1 }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+        <TextField sx={{ width: 150, mr: 1 }} size="small" onChange={handleChange} label="code" />
+        <ButtonGroup size="small" variant="contained">
+          <Button disabled={value === ''} onClick={addCode}>
+            读取
+          </Button>
+          <Button
+            onClick={() => {
+              setType('edit');
+            }}
+          >
+            新建
+          </Button>
+        </ButtonGroup>
+      </Box>
+      <Box sx={{ width: 300, mt: 1 }}>
+        {type === 'edit' ? <MemoryInput successCallback={successCreateCallback} /> : <MemoryReader code={code} />}
+      </Box>
+    </Container>
   );
 };
 

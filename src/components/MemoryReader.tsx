@@ -2,55 +2,48 @@ import useSWR from 'swr';
 import { Button, Card, CardActions, CardContent, CardHeader, TextField, Typography } from '@mui/material';
 import copy from 'copy-to-clipboard';
 import { fetcher } from '../utils/fetcher';
-
+import CopyButton from './CopyButton';
+import { Box } from '@mui/system';
 interface MemoryReaderProps {
   code: string;
 }
 
 const MemoryReader = ({ code }: MemoryReaderProps) => {
-  const { data, error } = useSWR<MemoryRecord>(`/api/memory/findOne/${code}`, () =>
-    fetcher('/api/memory/findOne', {
-      method: 'post',
-      body: JSON.stringify({
-        code,
-      }),
-    })
-  );
+  const { data, error } = useSWR<MemoryRecord>(`/api/memory/${code}`, fetcher);
   if (error) {
-    return <div>{error.message}</div>;
-  }
-
-  if (data) {
     return (
-      <Card sx={{ width: 300 }}>
-        <CardHeader
-          title={
-            <div>
-              <Typography>{data.code}</Typography>
-              <Button
-                onClick={() => {
-                  copy(data.code);
-                }}
-              >
-                copy
-              </Button>
-            </div>
-          }
-        />
-        <CardContent sx={{ height: 300 }}>
-          <Button
-            onClick={() => {
-              copy(data.content);
-            }}
-          >
-            copy
-          </Button>
-          <Typography>{data.content}</Typography>
-        </CardContent>
+      <Card>
+        <CardHeader title="出错啦" />
+        <CardContent>{error.message}</CardContent>
       </Card>
     );
   }
 
-  return <div>加载中</div>;
+  if (data) {
+    return (
+      <Card sx={{ width: '100%' }}>
+        <CardHeader
+          title={
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="h5">{data.code}</Typography>
+              <CopyButton text={data.code} />
+            </Box>
+          }
+        />
+        <CardContent sx={{ height: 200, overflow: 'auto' }}>
+          <Typography>{data.content}</Typography>
+        </CardContent>
+        <CardActions>
+          <CopyButton text={data.content} />
+        </CardActions>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader title="读取中..." />
+    </Card>
+  );
 };
 export default MemoryReader;
