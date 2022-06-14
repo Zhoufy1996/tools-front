@@ -1,4 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { fetcher } from '../utils/fetcher';
 
@@ -8,6 +9,7 @@ interface MemoryInputProps {
 
 export const MemoryInput = ({ successCallback }: MemoryInputProps) => {
   const [content, setContent] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContent(event.target.value);
@@ -20,6 +22,14 @@ export const MemoryInput = ({ successCallback }: MemoryInputProps) => {
         body: JSON.stringify({
           content,
         }),
+      });
+      enqueueSnackbar('保存成功', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'center',
+        },
+        autoHideDuration: 1000,
       });
       successCallback(res.code);
     } catch (e) {

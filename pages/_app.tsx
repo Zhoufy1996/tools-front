@@ -5,6 +5,7 @@ import { ThemeProvider } from '@emotion/react';
 import theme from '../src/utils/theme';
 import { CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
+import RootContainer from '../src/components/RootContainer';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -19,7 +20,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <SnackbarProvider maxSnack={3}>
           <CssBaseline />
-          <Component {...pageProps} />
+          <RootContainer>
+            <Component {...pageProps} />
+          </RootContainer>
         </SnackbarProvider>
       </ThemeProvider>
     </>

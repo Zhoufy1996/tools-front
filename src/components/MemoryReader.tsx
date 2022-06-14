@@ -1,6 +1,5 @@
 import useSWR from 'swr';
-import { Button, Card, CardActions, CardContent, CardHeader, TextField, Typography } from '@mui/material';
-import copy from 'copy-to-clipboard';
+import { Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
 import { fetcher } from '../utils/fetcher';
 import CopyButton from './CopyButton';
 import { Box } from '@mui/system';

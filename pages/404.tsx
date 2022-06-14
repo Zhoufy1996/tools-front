@@ -5,7 +5,7 @@ const NotFound = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/memory');
+    router.push('/torrent');
   }, [router]);
 
   return null;
