@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import Scheduler from './scheduler';
 import fetch from 'node-fetch';
 import https from 'https';
+import { JSDOM } from 'jsdom';
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -60,10 +61,7 @@ const getDocument = async (url: string) => {
   });
   const body = await response.text();
 
-  const domparser = new DOMParser();
-
-  const doc = domparser.parseFromString(body, 'text/html');
-  return doc;
+  return new JSDOM(body).window.document;
 };
 
 // 获取某章节的内容

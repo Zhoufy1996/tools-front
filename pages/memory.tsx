@@ -23,10 +23,6 @@ const Memory = () => {
     setCode(v);
   }, []);
 
-  useEffect(() => {
-    fetcher('/api/esjzone/1581942520');
-  }, []);
-
   return (
     <Container sx={{ p: 1 }}>
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
