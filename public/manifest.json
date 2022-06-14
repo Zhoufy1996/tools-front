@@ -4,9 +4,9 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "epic-tool",
-    "short_name": "epic-tool",
-    "description": "epic-tool",
+    "name": "工具包",
+    "short_name": "工具包",
+    "description": "工具包",
     "icons": [
         {
             "src": "/icons/icon-192x192.png",
