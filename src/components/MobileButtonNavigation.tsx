@@ -26,7 +26,6 @@ const MobileButtonNavigation = () => {
         }}
       >
         <BottomNavigationAction value="/memory" label="记忆本" />
-        <BottomNavigationAction value="/torrent" label="torrent" />
       </BottomNavigation>
     </Paper>
   );

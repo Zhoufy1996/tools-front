@@ -1,6 +1,14 @@
 import { useEffect, useRef } from 'react';
 import Video from '../src/components/Video';
 import WebTorrent from 'webtorrent';
+import { Button } from '@mui/material';
+import magnet from 'magnet-uri';
+import parseTorrent from 'parse-torrent';
+/**
+ * client.
+ *
+ *
+ */
 
 const client = new WebTorrent();
 const torrentId =
@@ -13,12 +21,13 @@ const torrentId =
 // torrent search
 // backend torrent spider
 const Torrent = () => {
-  useEffect(() => {
+  const handleDownload = () => {
+    const parsed = magnet.decode(torrentId);
+    console.log(parsed.infoHash);
+    console.log(parseTorrent(torrentId));
     client.add(torrentId, function (torrent) {
       // Torrents can contain many files. Let's use the .mp4 file
-      const file = torrent.files.find(function (file) {
-        return file.name.endsWith('.mp4');
-      });
+      console.log(torrent.files);
 
       // Render to a <video> element by providing an ID. Alternatively, one can also provide a DOM element.
       torrent.on('download', function (bytes) {
@@ -27,10 +36,24 @@ const Torrent = () => {
         console.log('download speed: ' + torrent.downloadSpeed);
         console.log('progress: ' + torrent.progress);
       });
-      file && file.appendTo('body');
+      console.log(torrent.files);
+      torrent.files.forEach((file) => {
+        file.getBlobURL((err, url) => {
+          console.log(url);
+          if (err) throw err;
+          const a = document.createElement('a');
+          a.download = file.name;
+          a.href = url || '';
+          a.textContent = 'Download ' + file.name;
+          document.body.appendChild(a);
+          a.click();
+        });
+      });
+      // file && file.appendTo('body');
     });
-  }, []);
-  return null;
+  };
+
+  return <Button onClick={handleDownload}>download</Button>;
   // return <Video videoOptions={videoJsOptions} />;
 };
 
