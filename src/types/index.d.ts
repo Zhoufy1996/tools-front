@@ -4,3 +4,9 @@ export interface MemoryRecord {
   content: string;
   creationDate: string;
 }
+
+export interface EquipmentRecord {
+  uuid: string;
+  imageBase64: string;
+  parseString?: string;
+}
