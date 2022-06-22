@@ -4,8 +4,13 @@ import getNovelContent from '../../../src/utils/esjzone';
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
   if (request.method?.toLowerCase() === 'get') {
     const { id } = request.query;
-    const content = await getNovelContent(Number(id as string));
-    return response.status(200).json(content);
+    try {
+      const content = await getNovelContent(Number(id as string));
+      return response.status(200).json(content);
+    } catch (e) {
+      console.log(e);
+      return response.status(500).json({ error: e });
+    }
   }
 
   return response.status(500).json({

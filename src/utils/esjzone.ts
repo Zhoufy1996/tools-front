@@ -90,40 +90,42 @@ const fileSave = (text: string, title: string) => {
 };
 
 const getNovelContent = (id: number) => {
-  return new Promise(async (resolve) => {
-    console.log(id);
-    const chapterDocument = await getDocument(`https://www.esjzone.cc/detail/${id}.html`);
-    console.log(chapterDocument);
-    const title = getTitle(chapterDocument);
-    const intro = getIntro(chapterDocument);
-    const chapterList = getChapterList(chapterDocument);
-    console.log(title);
-    console.log(chapterList);
-    const childChapterList = chapterList.filter((item) => item.url != null);
-    const scheduler = new Scheduler(
-      childChapterList.map((item) => {
-        return () => getNovelContentByUrl((item.url as string) || '');
-      }),
-      {
-        maxCount: 5,
-        maxTryCount: 1,
-      }
-    );
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log(id);
+      const chapterDocument = await getDocument(`https://www.esjzone.cc/detail/${id}.html`);
+      console.log(chapterDocument);
+      const title = getTitle(chapterDocument);
+      const intro = getIntro(chapterDocument);
+      const chapterList = getChapterList(chapterDocument);
+      console.log(title);
+      console.log(chapterList);
+      const childChapterList = chapterList.filter((item) => item.url != null);
+      const scheduler = new Scheduler(
+        childChapterList.map((item) => {
+          return () => getNovelContentByUrl((item.url as string) || '');
+        }),
+        {
+          maxCount: 5,
+          maxTryCount: 1,
+        }
+      );
 
-    scheduler.execute().then((contents) => {
-      const text = `${title}\n${intro}\n\n${contents
-        .map((content, index) => {
-          return `${chapterList[index].title}\n${content}`;
-        })
-        .join('\n\n')}`;
+      scheduler.execute().then((contents) => {
+        const text = `${title}\n${intro}\n\n${contents
+          .map((content, index) => {
+            return `${chapterList[index].title}\n${content}`;
+          })
+          .join('\n\n')}`;
 
-      fileSave(text, title as string);
-
-      resolve({
-        title,
-        text,
+        resolve({
+          title,
+          text,
+        });
       });
-    });
+    } catch (e) {
+      reject(e);
+    }
   });
 };
 

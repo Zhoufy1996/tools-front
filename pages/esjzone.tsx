@@ -10,7 +10,11 @@ const Esjzone = () => {
   };
 
   const handleDownload = async () => {
-    await fetcher(`api/esjzone/${value}`);
+    try {
+      await fetcher(`api/esjzone/${value}`);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
