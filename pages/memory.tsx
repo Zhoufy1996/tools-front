@@ -1,8 +1,7 @@
 import { Box, Button, ButtonGroup, Container, TextField } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import MemoryInput from '../src/components/MemoryInput';
 import MemoryReader from '../src/components/MemoryReader';
-import { fetcher } from '../src/utils/fetcher';
 
 const Memory = () => {
   const [value, setValue] = useState('');

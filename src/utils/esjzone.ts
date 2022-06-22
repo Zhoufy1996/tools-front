@@ -3,6 +3,7 @@ import Scheduler from './scheduler';
 import fetch from 'node-fetch';
 import https from 'https';
 import { JSDOM } from 'jsdom';
+import { Blob } from 'buffer';
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -24,8 +25,8 @@ interface Chapter {
 }
 
 // 获取所有章节名和阅读链接
-const getChapterList = () => {
-  const chapterListNode = document.querySelector('#chapterList');
+const getChapterList = (doc: Document) => {
+  const chapterListNode = doc.querySelector('#chapterList');
   const childNodes = chapterListNode?.children;
   if (childNodes) {
     const chapters: Chapter[] = Array.from(childNodes).map((node) => {
@@ -60,7 +61,7 @@ const getDocument = async (url: string) => {
     agent: httpsAgent,
   });
   const body = await response.text();
-
+  console.log(body);
   return new JSDOM(body).window.document;
 };
 
@@ -84,17 +85,20 @@ const getNovelContentByUrl = async (url: string) => {
 
 // txt下载
 const fileSave = (text: string, title: string) => {
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' }) as any;
   saveAs(blob, `${title}.txt`);
 };
 
 const getNovelContent = (id: number) => {
   return new Promise(async (resolve) => {
+    console.log(id);
     const chapterDocument = await getDocument(`https://www.esjzone.cc/detail/${id}.html`);
+    console.log(chapterDocument);
     const title = getTitle(chapterDocument);
     const intro = getIntro(chapterDocument);
-    const chapterList = getChapterList();
-
+    const chapterList = getChapterList(chapterDocument);
+    console.log(title);
+    console.log(chapterList);
     const childChapterList = chapterList.filter((item) => item.url != null);
     const scheduler = new Scheduler(
       childChapterList.map((item) => {
