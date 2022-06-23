@@ -76,7 +76,7 @@ const validAttributes: ValidAttribute[] = [
     min: 3,
     max: 50,
     calc: (value) => {
-      return value * 1.5;
+      return value * 1.6;
     },
   },
   {
@@ -85,7 +85,7 @@ const validAttributes: ValidAttribute[] = [
     min: 3,
     max: 60,
     calc: (value) => {
-      return value * 1.1;
+      return value * 1.125;
     },
   },
   {

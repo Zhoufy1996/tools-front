@@ -6,6 +6,7 @@ import theme from '../src/utils/theme';
 import { CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import RootContainer from '../src/components/RootContainer';
+import SpeedActions from '../src/components/SpeedActions';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -22,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <CssBaseline />
           <RootContainer>
             <Component {...pageProps} />
+            <SpeedActions />
           </RootContainer>
         </SnackbarProvider>
       </ThemeProvider>

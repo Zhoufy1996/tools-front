@@ -3,9 +3,10 @@ import { UploadFileOutlined } from '@mui/icons-material';
 import { Box, Button, Container, Grid } from '@mui/material';
 import localforage from 'localforage';
 import { v4 } from 'uuid';
-import { EquipmentRecord } from '../src/types';
-import EquipmentCard from '../src/components/EquipmentCard';
+import { EquipmentRecord } from '../../src/types';
+import EquipmentCard from '../../src/components/EquipmentCard';
 import LZString from 'lz-string';
+import ScoreCalcRule from '../../src/components/ScoreCalcRule';
 
 const OcrView = () => {
   const [state, setState] = useState<{
@@ -92,21 +93,34 @@ const OcrView = () => {
     });
   }, []);
 
+  const handleDelete = useCallback((uuid: string) => {
+    setState((pre) => {
+      return {
+        ...pre,
+        equipmentData: pre.equipmentData.filter((item) => {
+          return item.uuid !== uuid;
+        }),
+      };
+    });
+  }, []);
+
   return (
     <Container sx={{ p: 1 }}>
-      <Box>
+      <Box sx={{ mb: 1 }}>
         <Button component="label" variant="outlined" startIcon={<UploadFileOutlined />} sx={{ marginRight: '1rem' }}>
           图片
           <input type="file" accept=".png,.gif,.jpeg,.jpg" hidden onChange={handleFileUpload} />
         </Button>
+        <ScoreCalcRule />
       </Box>
       <Box>
         <Grid container spacing={1}>
           {state.equipmentData.map((data) => {
             return (
-              <Grid xs={4} item key={data.uuid}>
+              <Grid xs={12} md={6} xl={4} item key={data.uuid}>
                 <EquipmentCard
                   handleEditData={handleEditData}
+                  handleDelete={handleDelete}
                   imageBase64={data.imageBase64}
                   parseString={data.parseString}
                   uuid={data.uuid}

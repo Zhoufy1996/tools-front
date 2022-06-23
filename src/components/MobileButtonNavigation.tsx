@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 
 const MobileButtonNavigation = () => {
   const router = useRouter();
-
   return (
     <Paper
       sx={{
@@ -17,7 +16,7 @@ const MobileButtonNavigation = () => {
     >
       <BottomNavigation
         showLabels
-        value={router.pathname}
+        value={`/${router.pathname.split('/')[1]}`}
         onChange={(event, newValue) => {
           router.push(newValue);
         }}
@@ -26,6 +25,7 @@ const MobileButtonNavigation = () => {
         }}
       >
         <BottomNavigationAction value="/memory" label="记忆本" />
+        <BottomNavigationAction value="/epic7" label="第七史诗工具" />
       </BottomNavigation>
     </Paper>
   );

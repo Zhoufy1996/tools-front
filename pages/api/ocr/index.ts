@@ -22,6 +22,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
       ImageBase64: JSON.parse(request.body).imageBase64,
     });
 
+    console.log(res.TextDetections);
     return response.status(200).json(res.TextDetections);
   } catch (e) {
     console.log(e);
