@@ -1,8 +1,14 @@
 import { BottomNavigation, Paper, BottomNavigationAction } from '@mui/material';
+import localforage from 'localforage';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const MobileButtonNavigation = () => {
   const router = useRouter();
+
+  useEffect(() => {
+    localforage.setItem('lastPathname', router.pathname);
+  }, [router.pathname]);
   return (
     <Paper
       sx={{

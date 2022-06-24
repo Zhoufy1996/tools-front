@@ -1,4 +1,1 @@
-#### 1.middleware鉴权
-
-1. localstorage无法获取，使用cookie
-2. 如何忽略ico、json
+1. 手机端超过1M的图片无法识别

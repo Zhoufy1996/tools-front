@@ -15,6 +15,7 @@ interface EquipmentCardProps {
 
 const EquipmentCard = ({ imageBase64, parseString, uuid, handleEditData, handleDelete }: EquipmentCardProps) => {
   const [isReading, setIsReading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const handleRead = useCallback(async () => {
     try {
       setIsReading(true);
@@ -36,6 +37,8 @@ const EquipmentCard = ({ imageBase64, parseString, uuid, handleEditData, handleD
         const text = transToText(attribute);
         handleEditData(text, uuid);
       }
+    } catch (e) {
+      console.log(e);
     } finally {
       setIsReading(false);
     }
@@ -46,7 +49,7 @@ const EquipmentCard = ({ imageBase64, parseString, uuid, handleEditData, handleD
       handleRead();
     }
   }, [handleRead, parseString]);
-  console.log(parseString);
+
   return (
     <Card sx={{ width: '100%' }}>
       <CardMedia component="img" width="140" image={imageBase64} alt="图片" />

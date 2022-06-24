@@ -6,6 +6,7 @@ import { v4 } from 'uuid';
 import { EquipmentRecord } from '../../src/types';
 import EquipmentCard from '../../src/components/EquipmentCard';
 import LZString from 'lz-string';
+import Compressor from 'compressorjs';
 import ScoreCalcRule from '../../src/components/ScoreCalcRule';
 
 const OcrView = () => {
@@ -55,25 +56,36 @@ const OcrView = () => {
       return;
     }
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setState((pre) => {
-        return {
-          ...pre,
-          equipmentData: [
-            ...pre.equipmentData,
-            {
-              uuid: v4(),
-              imageBase64: reader.result as string,
-            },
-          ],
+    new Compressor(file, {
+      quality: 0.6,
+
+      // The compression process is asynchronous,
+      // which means you have to access the `result` in the `success` hook function.
+      success(result) {
+        const reader = new FileReader();
+        reader.readAsDataURL(result);
+        reader.onload = () => {
+          setState((pre) => {
+            return {
+              ...pre,
+              equipmentData: [
+                {
+                  uuid: v4(),
+                  imageBase64: reader.result as string,
+                },
+                ...pre.equipmentData,
+              ],
+            };
+          });
         };
-      });
-    };
-    reader.onerror = (err) => {
-      console.log(err);
-    };
+        reader.onerror = (err) => {
+          console.log(err);
+        };
+      },
+      error(err) {
+        console.log(err.message);
+      },
+    });
   };
 
   const handleEditData = useCallback((parseString: string, uuid: string) => {
