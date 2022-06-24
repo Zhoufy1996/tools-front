@@ -10,3 +10,9 @@ export interface EquipmentRecord {
   imageBase64: string;
   parseString?: string;
 }
+
+export interface CharacterRecord {
+  uuid: string;
+  imageBase64: string;
+  name: string;
+}

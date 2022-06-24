@@ -1,29 +1,28 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { UploadFileOutlined } from '@mui/icons-material';
-import { Box, Button, Container, Grid } from '@mui/material';
 import localforage from 'localforage';
-import { v4 } from 'uuid';
-import { EquipmentRecord } from '../../src/types';
-import EquipmentCard from '../../src/components/EquipmentCard';
 import LZString from 'lz-string';
-import ScoreCalcRule from '../../src/components/ScoreCalcRule';
+import { CharacterRecord } from '../../src/types';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { readFile } from '../../src/utils/file';
+import { v4 } from 'uuid';
+import { Box, Button, Container, Grid } from '@mui/material';
+import CharacterCard from '../../src/components/CharacterCard';
+import { UploadFileOutlined } from '@mui/icons-material';
 
-const OcrView = () => {
+const Character = () => {
   const [state, setState] = useState<{
     hasInit: boolean;
-    equipmentData: EquipmentRecord[];
+    characterData: CharacterRecord[];
   }>({
     hasInit: false,
-    equipmentData: [],
+    characterData: [],
   });
 
   const handleGetData = useCallback(() => {
-    localforage.getItem('epic7-equipment').then((data) => {
+    localforage.getItem('epic7-character').then((data) => {
       setState({
         hasInit: true,
-        equipmentData:
-          (data as EquipmentRecord[])?.map((item) => {
+        characterData:
+          (data as CharacterRecord[])?.map((item) => {
             return {
               ...item,
               imageBase64: LZString.decompress(item.imageBase64) || '',
@@ -36,12 +35,11 @@ const OcrView = () => {
   useEffect(() => {
     handleGetData();
   }, [handleGetData]);
-
   useEffect(() => {
     if (state.hasInit) {
       localforage.setItem(
         'epic7-equipment',
-        state.equipmentData.map((item) => {
+        state.characterData.map((item) => {
           return {
             ...item,
             imageBase64: LZString.compress(item.imageBase64),
@@ -60,26 +58,27 @@ const OcrView = () => {
     setState((pre) => {
       return {
         ...pre,
-        equipmentData: [
+        characterData: [
           {
             uuid: v4(),
             imageBase64: base64 as string,
+            name: file.name,
           },
-          ...pre.equipmentData,
+          ...pre.characterData,
         ],
       };
     });
   };
 
-  const handleEditData = useCallback((parseString: string, uuid: string) => {
+  const handleEditData = useCallback((name: string, uuid: string) => {
     setState((pre) => {
       return {
         ...pre,
-        equipmentData: pre.equipmentData.map((item) => {
+        characterData: pre.characterData.map((item) => {
           if (item.uuid === uuid) {
             return {
               ...item,
-              parseString,
+              name,
             };
           }
           return item;
@@ -92,7 +91,7 @@ const OcrView = () => {
     setState((pre) => {
       return {
         ...pre,
-        equipmentData: pre.equipmentData.filter((item) => {
+        characterData: pre.characterData.filter((item) => {
           return item.uuid !== uuid;
         }),
       };
@@ -106,18 +105,17 @@ const OcrView = () => {
           图片
           <input type="file" accept=".png,.gif,.jpeg,.jpg" hidden onChange={handleFileUpload} />
         </Button>
-        <ScoreCalcRule />
       </Box>
       <Box>
         <Grid container spacing={1}>
-          {state.equipmentData.map((data) => {
+          {state.characterData.map((data) => {
             return (
               <Grid xs={12} md={6} xl={4} item key={data.uuid}>
-                <EquipmentCard
+                <CharacterCard
                   handleEditData={handleEditData}
                   handleDelete={handleDelete}
                   imageBase64={data.imageBase64}
-                  parseString={data.parseString}
+                  name={data.name}
                   uuid={data.uuid}
                 />
               </Grid>
@@ -129,4 +127,4 @@ const OcrView = () => {
   );
 };
 
-export default OcrView;
+export default Character;

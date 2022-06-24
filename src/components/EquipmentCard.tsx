@@ -1,5 +1,4 @@
 import { CardMedia, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import { useCallback, useEffect, useState } from 'react';
 import { GeneralAccurateOCRResponse } from 'tencentcloud-sdk-nodejs/tencentcloud/services/ocr/v20181119/ocr_models';
 import { getAttributes, getRecoinAttributes, isRecoin, transToText } from '../utils/equipment';
@@ -15,7 +14,6 @@ interface EquipmentCardProps {
 
 const EquipmentCard = ({ imageBase64, parseString, uuid, handleEditData, handleDelete }: EquipmentCardProps) => {
   const [isReading, setIsReading] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
   const handleRead = useCallback(async () => {
     try {
       setIsReading(true);
