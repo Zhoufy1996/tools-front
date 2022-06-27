@@ -1,5 +1,6 @@
 import { Container } from '@mui/material';
-import MobileButtonNavigation from './MobileButtonNavigation';
+import MobileButtonNavigation from '../MobileButtonNavigation';
+import SpeedActions from '../SpeedActions';
 
 const RootContainer = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,6 +14,7 @@ const RootContainer = ({ children }: { children: React.ReactNode }) => {
       })}
     >
       <MobileButtonNavigation />
+      <SpeedActions />
       {children}
     </Container>
   );

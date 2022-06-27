@@ -1,4 +1,5 @@
 import { GeneralAccurateOCRResponse } from 'tencentcloud-sdk-nodejs/tencentcloud/services/ocr/v20181119/ocr_models';
+import { round } from 'mathjs';
 
 const sum = (numbers: number[]) => {
   return numbers.reduce((acc, cur) => {
@@ -216,7 +217,7 @@ export const transToText = (attributes: Attribute[]) => {
   const scores = attributes.map((item) => {
     return calcScore(item);
   });
-  return `${scores.join('+')}=${sum(scores)}`;
+  return `${scores.join('+')}=${round(sum(scores), 1)}`;
 };
 
 export const isRecoin = (data: GeneralAccurateOCRResponse['TextDetections']) => {

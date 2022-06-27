@@ -16,7 +16,7 @@ const ScoreCalcRule = () => {
 
   return (
     <>
-      <Button variant="contained" {...bindTrigger(popupState)}>
+      <Button sx={{ ml: 2 }} variant="contained" {...bindTrigger(popupState)}>
         算分规则
       </Button>
       <Menu {...bindMenu(popupState)}>

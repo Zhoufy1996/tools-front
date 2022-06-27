@@ -1,19 +1,25 @@
 import { CardMedia, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { GeneralAccurateOCRResponse } from 'tencentcloud-sdk-nodejs/tencentcloud/services/ocr/v20181119/ocr_models';
-import { getAttributes, getRecoinAttributes, isRecoin, transToText } from '../utils/equipment';
-import { fetcher } from '../utils/fetcher';
+import { getAttributes, getRecoinAttributes, isRecoin, transToText } from 'src/utils/equipment';
+import { fetcher } from 'src/utils/fetcher';
+import useLocalForage from 'src/hooks/useLocalForage';
+import { EquipmentRecord } from 'src/types';
+import localforage from 'localforage';
 
 interface EquipmentCardProps {
-  imageBase64: string;
-  parseString?: string;
   uuid: string;
-  handleEditData: (parseString: string, uuid: string) => void;
   handleDelete: (uuid: string) => void;
 }
 
-const EquipmentCard = ({ imageBase64, parseString, uuid, handleEditData, handleDelete }: EquipmentCardProps) => {
+const EquipmentCard = ({ uuid, handleDelete }: EquipmentCardProps) => {
   const [isReading, setIsReading] = useState(false);
+  const [state, setState] = useLocalForage<EquipmentRecord>(uuid, {
+    imageBase64: '',
+    parseString: '',
+  });
+  const { parseString, imageBase64 } = state;
+
   const handleRead = useCallback(async () => {
     try {
       setIsReading(true);
@@ -29,24 +35,40 @@ const EquipmentCard = ({ imageBase64, parseString, uuid, handleEditData, handleD
         const attribute = getAttributes(data);
         const text = `重铸前: ${transToText(attribute)}
 重铸后: ${transToText(recoinAttribute)}`;
-        handleEditData(text, uuid);
+        setState({
+          imageBase64,
+          parseString: text,
+        });
       } else {
         const attribute = getAttributes(data);
         const text = transToText(attribute);
-        handleEditData(text, uuid);
+        setState({
+          imageBase64,
+          parseString: text,
+        });
       }
     } catch (e) {
       console.log(e);
     } finally {
       setIsReading(false);
     }
-  }, [imageBase64, handleEditData, uuid]);
+  }, [imageBase64, setState]);
 
   useEffect(() => {
-    if (!parseString) {
+    if (!parseString && imageBase64) {
       handleRead();
     }
-  }, [handleRead, parseString]);
+  }, [handleRead, parseString, imageBase64]);
+
+  if (imageBase64 == '') {
+    return (
+      <Card sx={{ width: '100%', height: 200 }}>
+        <CardContent>
+          <Typography>图片读取中...</Typography>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -63,7 +85,7 @@ const EquipmentCard = ({ imageBase64, parseString, uuid, handleEditData, handleD
             })}
           </>
         ) : (
-          '识别中'
+          '文字识别中'
         )}
       </CardContent>
       <CardActions>

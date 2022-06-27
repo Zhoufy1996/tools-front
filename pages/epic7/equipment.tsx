@@ -1,55 +1,21 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { UploadFileOutlined } from '@mui/icons-material';
 import { Box, Button, Container, Grid } from '@mui/material';
 import localforage from 'localforage';
 import { v4 } from 'uuid';
-import { EquipmentRecord } from '../../src/types';
-import EquipmentCard from '../../src/components/EquipmentCard';
-import LZString from 'lz-string';
-import ScoreCalcRule from '../../src/components/ScoreCalcRule';
-import { readFile } from '../../src/utils/file';
+import { EquipmentRecord } from 'src/types';
+import EquipmentCard from 'src/components/pages/epic7/equipment/EquipmentCard';
+import ScoreCalcRule from 'src/components/pages/epic7/equipment/ScoreCalcRule';
+import { fileSave, readFile, readFileAsText } from 'src/utils/file';
+import useLocalForage from 'src/hooks/useLocalForage';
+import ImageUpload from 'src/components/shared/ImageUpload';
+import SyncData from 'src/components/shared/SyncData';
+import dayjs from 'dayjs';
+import { useSnackbar } from 'notistack';
 
 const OcrView = () => {
-  const [state, setState] = useState<{
-    hasInit: boolean;
-    equipmentData: EquipmentRecord[];
-  }>({
-    hasInit: false,
-    equipmentData: [],
-  });
-
-  const handleGetData = useCallback(() => {
-    localforage.getItem('epic7-equipment').then((data) => {
-      setState({
-        hasInit: true,
-        equipmentData:
-          (data as EquipmentRecord[])?.map((item) => {
-            return {
-              ...item,
-              imageBase64: LZString.decompress(item.imageBase64) || '',
-            };
-          }) || [],
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    handleGetData();
-  }, [handleGetData]);
-
-  useEffect(() => {
-    if (state.hasInit) {
-      localforage.setItem(
-        'epic7-equipment',
-        state.equipmentData.map((item) => {
-          return {
-            ...item,
-            imageBase64: LZString.compress(item.imageBase64),
-          };
-        })
-      );
-    }
-  }, [state]);
+  const [state, setState] = useLocalForage<string[]>('equipmentUuidList', []);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -57,69 +23,89 @@ const OcrView = () => {
     }
     const file = e.target.files[0];
     const base64 = await readFile(file);
-    setState((pre) => {
-      return {
-        ...pre,
-        equipmentData: [
-          {
-            uuid: v4(),
-            imageBase64: base64 as string,
-          },
-          ...pre.equipmentData,
-        ],
-      };
-    });
+    const uuid = v4();
+    localforage
+      .setItem<EquipmentRecord>(uuid, {
+        imageBase64: base64 as string,
+        parseString: '',
+      })
+      .then(() => {
+        setState((pre) => {
+          return [uuid, ...pre];
+        });
+      });
   };
 
-  const handleEditData = useCallback((parseString: string, uuid: string) => {
-    setState((pre) => {
-      return {
-        ...pre,
-        equipmentData: pre.equipmentData.map((item) => {
-          if (item.uuid === uuid) {
-            return {
-              ...item,
-              parseString,
-            };
-          }
-          return item;
-        }),
-      };
-    });
-  }, []);
+  const handleDelete = useCallback(
+    (uuid: string) => {
+      setState((pre) => {
+        return pre.filter((item) => {
+          return item !== uuid;
+        });
+      });
+      localforage.removeItem(uuid);
+    },
+    [setState]
+  );
 
-  const handleDelete = useCallback((uuid: string) => {
-    setState((pre) => {
-      return {
-        ...pre,
-        equipmentData: pre.equipmentData.filter((item) => {
-          return item.uuid !== uuid;
-        }),
-      };
-    });
-  }, []);
+  const handleExport = useCallback(async () => {
+    const result: { [uuid: string]: EquipmentRecord } = {};
+    for (let uuid of state) {
+      const data = await localforage.getItem<EquipmentRecord>(uuid);
+      if (data != null) {
+        result[uuid] = data;
+      }
+    }
+
+    fileSave(
+      JSON.stringify({
+        uuids: state,
+        data: result,
+      }),
+      `equipment-${dayjs().format('YYYY-MM-DD HH:mm:ss')}`
+    );
+  }, [state]);
+
+  const handleImport = useCallback(
+    async (file: File) => {
+      const data = await readFileAsText<{
+        uuids: string[];
+        data: { [uuid: string]: EquipmentRecord };
+      }>(file);
+      if (data.uuids && data.uuids.length > 0) {
+        setState(data.uuids);
+      }
+
+      if (data.data) {
+        for (let uuid in data.data) {
+          await localforage.setItem(uuid, data.data[uuid]);
+        }
+        enqueueSnackbar('导入成功', {
+          variant: 'success',
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center',
+          },
+          autoHideDuration: 1000,
+        });
+      }
+    },
+    [setState, enqueueSnackbar]
+  );
 
   return (
     <Container sx={{ p: 1 }}>
       <Box sx={{ mb: 1 }}>
-        <Button component="label" variant="outlined" startIcon={<UploadFileOutlined />} sx={{ marginRight: '1rem' }}>
-          图片
-          <input type="file" accept=".png,.gif,.jpeg,.jpg" hidden onChange={handleFileUpload} />
-        </Button>
+        <ImageUpload onChange={handleFileUpload}>图片</ImageUpload>
         <ScoreCalcRule />
+        <SyncData popupId="equipment" onExport={handleExport} onImport={handleImport} />
       </Box>
       <Box>
         <Grid container spacing={1}>
-          {state.equipmentData.map((data) => {
+          {state.map((uuid) => {
             return (
-              <Grid xs={12} md={6} xl={4} item key={data.uuid}>
-                <EquipmentCard
-                  handleEditData={handleEditData}
-                  handleDelete={handleDelete}
-                  imageBase64={data.imageBase64}
-                  parseString={data.parseString}
-                  uuid={data.uuid}
-                />
+              <Grid xs={12} md={6} xl={4} item key={uuid}>
+                <EquipmentCard handleDelete={handleDelete} uuid={uuid} />
               </Grid>
             );
           })}

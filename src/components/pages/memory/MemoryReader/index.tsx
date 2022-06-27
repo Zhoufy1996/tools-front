@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
-import { fetcher } from '../utils/fetcher';
-import CopyButton from './CopyButton';
+import { fetcher } from 'src/utils/fetcher';
+import CopyButton from 'src/components/shared/CopyButton';
 import { Box } from '@mui/system';
 interface MemoryReaderProps {
   code: string;
@@ -30,7 +30,7 @@ const MemoryReader = ({ code }: MemoryReaderProps) => {
           }
         />
         <CardContent sx={{ height: 200, overflow: 'auto' }}>
-          <Typography>{data.content}</Typography>
+          <Typography sx={{ wordBreak: 'break-all' }}>{data.content}</Typography>
         </CardContent>
         <CardActions>
           <CopyButton text={data.content} />

@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, CardHeader, TextField } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { fetcher } from '../utils/fetcher';
+import { fetcher } from 'src/utils/fetcher';
 
 interface MemoryInputProps {
   successCallback: (v: string) => void;

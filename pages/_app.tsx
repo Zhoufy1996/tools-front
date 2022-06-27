@@ -5,8 +5,8 @@ import { ThemeProvider } from '@emotion/react';
 import theme from '../src/utils/theme';
 import { CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
-import RootContainer from '../src/components/RootContainer';
-import SpeedActions from '../src/components/SpeedActions';
+import RootContainer from 'src/components/app/RootContainer';
+import InitialLocalforage from 'src/components/app/InitialLocalforage';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -18,12 +18,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="apple-touch-icon" href="/apple-icon.png" />
         <meta name="theme-color" content="#317EFB" />
       </Head>
+      <InitialLocalforage />
       <ThemeProvider theme={theme}>
         <SnackbarProvider maxSnack={3}>
           <CssBaseline />
           <RootContainer>
             <Component {...pageProps} />
-            <SpeedActions />
           </RootContainer>
         </SnackbarProvider>
       </ThemeProvider>
