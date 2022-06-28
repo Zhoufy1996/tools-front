@@ -21,19 +21,20 @@ const OcrView = () => {
     if (!e.target.files) {
       return;
     }
-    const file = e.target.files[0];
-    const base64 = await readFile(file);
-    const uuid = v4();
-    localforage
-      .setItem<EquipmentRecord>(uuid, {
-        imageBase64: base64 as string,
+    const handleFile = async (file: File) => {
+      const base64 = await readFile(file);
+      const uuid = v4();
+      await localforage.setItem<EquipmentRecord>(uuid, {
+        imageBase64: base64,
         parseString: '',
-      })
-      .then(() => {
-        setState((pre) => {
-          return [uuid, ...pre];
-        });
       });
+      return uuid;
+    };
+
+    const uuids = await Promise.all(Array.from(e.target.files).map((file) => handleFile(file)));
+    setState((pre) => {
+      return [...uuids, ...pre];
+    });
   };
 
   const handleDelete = useCallback(
@@ -96,7 +97,9 @@ const OcrView = () => {
   return (
     <Container sx={{ p: 1 }}>
       <Box sx={{ mb: 1 }}>
-        <ImageUpload onChange={handleFileUpload}>图片</ImageUpload>
+        <ImageUpload multiple onChange={handleFileUpload}>
+          图片
+        </ImageUpload>
         <ScoreCalcRule />
         <SyncData popupId="equipment" onExport={handleExport} onImport={handleImport} />
       </Box>

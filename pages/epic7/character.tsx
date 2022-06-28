@@ -18,19 +18,19 @@ const Character = () => {
     if (!e.target.files) {
       return;
     }
-    const file = e.target.files[0];
-    const base64 = await readFile(file);
-    const uuid = v4();
-    localforage
-      .setItem<CharacterRecord>(uuid, {
+    const handleFile = async (file: File) => {
+      const base64 = await readFile(file);
+      const uuid = v4();
+      await localforage.setItem<CharacterRecord>(uuid, {
         imageBase64: base64,
         name: file.name,
-      })
-      .then(() => {
-        setState((pre) => {
-          return [uuid, ...pre];
-        });
       });
+      return uuid;
+    };
+    const uuids = await Promise.all(Array.from(e.target.files).map((file) => handleFile(file)));
+    setState((pre) => {
+      return [...uuids, ...pre];
+    });
   };
 
   const handleDelete = useCallback(
@@ -93,7 +93,9 @@ const Character = () => {
   return (
     <Container sx={{ p: 1 }}>
       <Box sx={{ mb: 1 }}>
-        <ImageUpload onChange={handleFileUpload}>图片</ImageUpload>
+        <ImageUpload multiple onChange={handleFileUpload}>
+          图片
+        </ImageUpload>
         <SyncData popupId="character" onExport={handleExport} onImport={handleImport} />
       </Box>
       <Box>
