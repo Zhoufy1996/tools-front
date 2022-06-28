@@ -23,14 +23,7 @@ export const MemoryInput = ({ successCallback }: MemoryInputProps) => {
           content,
         }),
       });
-      enqueueSnackbar('保存成功', {
-        variant: 'success',
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'center',
-        },
-        autoHideDuration: 1000,
-      });
+      enqueueSnackbar('保存成功');
       successCallback(res.code);
     } catch (e) {
       console.log(e);

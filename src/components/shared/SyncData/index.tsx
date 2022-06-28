@@ -28,13 +28,13 @@ const SyncData = ({ popupId, onExport, onImport }: SyncDataProps) => {
         数据
       </Button>
       <Menu {...bindMenu(popupState)}>
-        <MenuItem>
+        <MenuItem sx={{ p: 0, minHeight: 30 }}>
           <Button size="small" component="label" onClick={onExport}>
             导出
           </Button>
         </MenuItem>
         <Divider />
-        <MenuItem>
+        <MenuItem sx={{ p: 0, minHeight: 30 }}>
           <Button size="small" component="label">
             导入
             <input type="file" accept=".txt" hidden onChange={handleImport} />

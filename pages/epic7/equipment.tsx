@@ -6,7 +6,7 @@ import { v4 } from 'uuid';
 import { EquipmentRecord } from 'src/types';
 import EquipmentCard from 'src/components/pages/epic7/equipment/EquipmentCard';
 import ScoreCalcRule from 'src/components/pages/epic7/equipment/ScoreCalcRule';
-import { fileSave, readFile, readFileAsText } from 'src/utils/file';
+import { fileSave, readImageFileAsDataURL, readFileAsText } from 'src/utils/file';
 import useLocalForage from 'src/hooks/useLocalForage';
 import ImageUpload from 'src/components/shared/ImageUpload';
 import SyncData from 'src/components/shared/SyncData';
@@ -22,7 +22,7 @@ const OcrView = () => {
       return;
     }
     const handleFile = async (file: File) => {
-      const base64 = await readFile(file);
+      const base64 = await readImageFileAsDataURL(file);
       const uuid = v4();
       await localforage.setItem<EquipmentRecord>(uuid, {
         imageBase64: base64,
@@ -81,14 +81,7 @@ const OcrView = () => {
         for (let uuid in data.data) {
           await localforage.setItem(uuid, data.data[uuid]);
         }
-        enqueueSnackbar('导入成功', {
-          variant: 'success',
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'center',
-          },
-          autoHideDuration: 1000,
-        });
+        enqueueSnackbar('导入成功');
       }
     },
     [setState, enqueueSnackbar]

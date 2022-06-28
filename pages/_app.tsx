@@ -20,7 +20,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <InitialLocalforage />
       <ThemeProvider theme={theme}>
-        <SnackbarProvider maxSnack={3}>
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          autoHideDuration={1000}
+          maxSnack={3}
+        >
           <CssBaseline />
           <RootContainer>
             <Component {...pageProps} />

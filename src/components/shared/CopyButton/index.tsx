@@ -12,14 +12,7 @@ const CopyButton = ({ text }: CopyButtonProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const handleCopy = useCallback(() => {
     copy(text);
-    enqueueSnackbar('复制成功', {
-      variant: 'success',
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'center',
-      },
-      autoHideDuration: 1000,
-    });
+    enqueueSnackbar('复制成功');
   }, [text, enqueueSnackbar]);
   return (
     <>

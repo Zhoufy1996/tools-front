@@ -5,7 +5,6 @@ import { getAttributes, getRecoinAttributes, isRecoin, transToText } from 'src/u
 import { fetcher } from 'src/utils/fetcher';
 import useLocalForage from 'src/hooks/useLocalForage';
 import { EquipmentRecord } from 'src/types';
-import localforage from 'localforage';
 
 interface EquipmentCardProps {
   uuid: string;
@@ -85,7 +84,7 @@ const EquipmentCard = ({ uuid, handleDelete }: EquipmentCardProps) => {
             })}
           </>
         ) : (
-          '文字识别中'
+          '文字识别中...'
         )}
       </CardContent>
       <CardActions>
