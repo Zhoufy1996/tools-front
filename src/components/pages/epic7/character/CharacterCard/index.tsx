@@ -1,13 +1,15 @@
 import { CardMedia, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import useLocalForage from 'src/hooks/useLocalForage';
 import { CharacterRecord } from 'src/types';
 import { readImageFileAsDataURL } from 'src/utils/file';
 import EditInput from './EditInput';
 import ImageUpload from 'src/components/shared/ImageUpload';
-import { readBase64AsObjectUrl } from 'src/utils/image';
 import { fetcher } from 'src/utils/fetcher';
 import { GeneralAccurateOCRResponse } from 'tencentcloud-sdk-nodejs/tencentcloud/services/ocr/v20181119/ocr_models';
+import useObjectURL from 'src/hooks/useObjectURL';
+import { usePopupState, bindMenu, bindTrigger } from 'material-ui-popup-state/hooks';
+import PopoverButton from 'src/components/shared/PopoverButton';
 
 interface EquipmentCardProps {
   uuid: string;
@@ -25,7 +27,7 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
 
   const { name, imageBase64 } = state;
 
-  const [imageUrl, setImageUrl] = useState('');
+  const imgUrl = useObjectURL(imageBase64);
 
   const handleRead = useCallback(async () => {
     try {
@@ -43,7 +45,6 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
       });
     } catch (e) {
       console.log(e);
-    } finally {
     }
   }, [imageBase64, setState]);
 
@@ -53,20 +54,7 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
     }
   }, [handleRead, name, imageBase64]);
 
-  useEffect(() => {
-    if (imageBase64) {
-      const blobUrl = readBase64AsObjectUrl(imageBase64);
-      setImageUrl(blobUrl);
-
-      return () => {
-        URL.revokeObjectURL(blobUrl);
-      };
-    }
-
-    return () => {};
-  }, [imageBase64]);
-
-  if (imageUrl === '') {
+  if (imgUrl === '') {
     return (
       <Card sx={{ width: '100%', height: 200 }}>
         <CardContent>
@@ -83,11 +71,10 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
           setGallerDefaultUuid(uuid);
         }}
         component="img"
-        width="140"
-        image={imageUrl}
+        image={imgUrl}
         alt="图片"
       />
-      <CardContent>
+      <CardContent sx={{ height: 70 }}>
         {isEditing ? (
           <EditInput
             defaultValue={name}
@@ -105,23 +92,33 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
             }}
           />
         ) : (
-          <Typography variant="body2" color="text.secondary">
-            {name}
+          <Typography variant="h5" color="text.secondary">
+            {name || '自动识别中...'}
           </Typography>
         )}
       </CardContent>
       <CardActions>
-        <Button
-          size="small"
-          onClick={() => {
-            setIsEditing(true);
-          }}
-        >
-          重命名
-        </Button>
+        <PopoverButton
+          text="编辑"
+          popupId="characterName"
+          items={[
+            {
+              text: '自动识别',
+              key: 'auto',
+              onClick: handleRead,
+            },
+            {
+              text: '重命名',
+              key: 'reset',
+              onClick: () => {
+                setIsEditing(true);
+              },
+            },
+          ]}
+        />
         <ImageUpload
           onChange={async (e) => {
-            if (!e.target.files) {
+            if (!e.target.files || !e.target.files[0]) {
               return;
             }
             const file = e.target.files[0];

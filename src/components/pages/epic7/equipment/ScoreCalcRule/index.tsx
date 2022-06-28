@@ -52,11 +52,11 @@ const ScoreCalcRule = () => {
                 </TableRow>
                 <TableRow>
                   <TableCell>暴击率(%)</TableCell>
-                  <TableCell>value * 1.6</TableCell>
+                  <TableCell>value * 1.5</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>暴击伤害(%)</TableCell>
-                  <TableCell>value * 1.125</TableCell>
+                  <TableCell>value * 1.1</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>速度</TableCell>

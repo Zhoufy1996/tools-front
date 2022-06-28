@@ -17,25 +17,28 @@ const OcrView = () => {
   const [state, setState] = useLocalForage<string[]>('equipmentUuidList', []);
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
-      return;
-    }
-    const handleFile = async (file: File) => {
-      const base64 = await readImageFileAsDataURL(file);
-      const uuid = v4();
-      await localforage.setItem<EquipmentRecord>(uuid, {
-        imageBase64: base64,
-        parseString: '',
-      });
-      return uuid;
-    };
+  const handleFileUpload = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) {
+        return;
+      }
+      const handleFile = async (file: File) => {
+        const base64 = await readImageFileAsDataURL(file);
+        const uuid = v4();
+        await localforage.setItem<EquipmentRecord>(uuid, {
+          imageBase64: base64,
+          parseString: '',
+        });
+        return uuid;
+      };
 
-    const uuids = await Promise.all(Array.from(e.target.files).map((file) => handleFile(file)));
-    setState((pre) => {
-      return [...uuids, ...pre];
-    });
-  };
+      const uuids = await Promise.all(Array.from(e.target.files).map((file) => handleFile(file)));
+      setState((pre) => {
+        return [...uuids, ...pre];
+      });
+    },
+    [setState]
+  );
 
   const handleDelete = useCallback(
     (uuid: string) => {
