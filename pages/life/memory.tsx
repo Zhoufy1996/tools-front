@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Container, TextField } from '@mui/material';
 import { useCallback, useState } from 'react';
-import MemoryInput from 'src/components/pages/memory/MemoryInput';
-import MemoryReader from 'src/components/pages/memory/MemoryReader';
+import MemoryInput from 'src/components/pages/life/memory/MemoryInput';
+import MemoryReader from 'src/components/pages/life/memory/MemoryReader';
 
 const Memory = () => {
   const [value, setValue] = useState('');

@@ -77,7 +77,7 @@ const EquipmentCard = ({ uuid, handleDelete }: EquipmentCardProps) => {
           <>
             {parseString?.split('\n').map((text, index) => {
               return (
-                <Typography key={index} variant="body2" color="text.secondary">
+                <Typography sx={{ wordBreak: 'break-all' }} key={index} variant="body2" color="text.secondary">
                   {text}
                 </Typography>
               );

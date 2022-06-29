@@ -74,7 +74,7 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
         image={imgUrl}
         alt="图片"
       />
-      <CardContent sx={{ height: 70 }}>
+      <CardContent sx={{ minHeight: 70 }}>
         {isEditing ? (
           <EditInput
             defaultValue={name}
@@ -92,7 +92,7 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
             }}
           />
         ) : (
-          <Typography variant="h5" color="text.secondary">
+          <Typography variant="h5" color="text.secondary" sx={{ wordBreak: 'break-all' }}>
             {name || '自动识别中...'}
           </Typography>
         )}

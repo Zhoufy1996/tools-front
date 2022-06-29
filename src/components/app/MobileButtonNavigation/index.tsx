@@ -27,11 +27,11 @@ const MobileButtonNavigation = () => {
           router.push(newValue);
         }}
         sx={{
-          height: 50,
+          height: 40,
         }}
       >
-        <BottomNavigationAction value="/memory" label="记忆本" />
-        <BottomNavigationAction value="/epic7" label="第七史诗工具" />
+        <BottomNavigationAction value="/life" label="日常" />
+        <BottomNavigationAction value="/epic7" label="第七史诗" />
       </BottomNavigation>
     </Paper>
   );

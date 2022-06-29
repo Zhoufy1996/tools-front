@@ -3,25 +3,34 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useRouter } from 'next/router';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 
 interface DialAction {
-  key: string;
   title: string;
   icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
 }
 
-const dialActions: DialAction[] = [
-  {
-    key: 'equipment',
-    title: '装备',
-    icon: AddPhotoAlternateIcon,
+const dialActions: {
+  [key: string]: { [key: string]: DialAction };
+} = {
+  epic7: {
+    equipment: {
+      title: '装备',
+      icon: AddPhotoAlternateIcon,
+    },
+
+    character: {
+      title: '角色',
+      icon: PersonAddIcon,
+    },
   },
-  {
-    key: 'character',
-    title: '角色',
-    icon: PersonAddIcon,
+  life: {
+    memory: {
+      title: '文字保存/读取',
+      icon: TextSnippetIcon,
+    },
   },
-];
+};
 
 const SpeedActions = () => {
   const router = useRouter();
@@ -29,8 +38,11 @@ const SpeedActions = () => {
     router.push(`/epic7/${path}`);
   };
 
-  if (router.pathname.split('/')[1] === 'epic7') {
-    const pathname = router.pathname.split('/')[2];
+  const [local, module, pagename] = router.pathname.split('/');
+
+  const actions = dialActions[module];
+
+  if (actions != null) {
     return (
       <SpeedDial
         ariaLabel="Speed Dial Actions"
@@ -45,15 +57,15 @@ const SpeedActions = () => {
         }}
         icon={<SpeedDialIcon />}
       >
-        {dialActions.map((item) => {
+        {Object.entries(actions).map(([key, action]) => {
           return (
             <SpeedDialAction
-              key={item.key}
+              key={key}
               onClick={() => {
-                navigate(item.key);
+                navigate(key);
               }}
-              icon={<item.icon color={pathname === item.key ? 'primary' : 'inherit'} />}
-              tooltipTitle={item.title}
+              icon={<action.icon color={pagename === key ? 'primary' : 'inherit'} />}
+              tooltipTitle={action.title}
               tooltipOpen
             />
           );
@@ -61,6 +73,7 @@ const SpeedActions = () => {
       </SpeedDial>
     );
   }
+
   return null;
 };
 

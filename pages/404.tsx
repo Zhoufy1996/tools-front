@@ -2,7 +2,7 @@ import localforage from 'localforage';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-const validPaths = ['/memory', '/epic7/character', '/epic7/equipment'];
+const validPaths = ['/life/memory', '/epic7/character', '/epic7/equipment'];
 
 const NotFound = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const NotFound = () => {
       if (res && validPaths.includes(res)) {
         router.push(res);
       } else {
-        router.push('/memory');
+        router.push('/life');
       }
     });
   }, [router]);
