@@ -1,7 +1,7 @@
 import { CardMedia, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { GeneralAccurateOCRResponse } from 'tencentcloud-sdk-nodejs/tencentcloud/services/ocr/v20181119/ocr_models';
-import { getAttributes, getRecoinAttributes, isRecoin, transToText } from 'src/utils/equipment';
+import { getAttributes, getRecoinAttributes, isRecoin, transToText } from 'src/utils/epic7';
 import { fetcher } from 'src/utils/fetcher';
 import useLocalForage from 'src/hooks/useLocalForage';
 import { EquipmentRecord } from 'src/types';

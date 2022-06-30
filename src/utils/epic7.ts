@@ -225,3 +225,43 @@ export const isRecoin = (data: GeneralAccurateOCRResponse['TextDetections']) => 
     return item.DetectedText === '重铸材料';
   });
 };
+
+/**
+ * 圣约书签：0.6602509% 184000
+ * 神秘：0.1700646% 280000
+ */
+export const calcGoldAndBookMark = (diamond: number) => {
+  let num = typeof diamond === 'number' ? diamond : 0;
+  interface Goods {
+    probability: number;
+    gold: number;
+  }
+
+  const normal: Goods = {
+    probability: 0.006602509,
+    gold: 184000,
+  };
+
+  const mystery: Goods = {
+    probability: 0.001700646,
+    gold: 280000,
+  };
+
+  const refleshDiamond = 3;
+  const gridCount = 6;
+
+  const refleshCount = Math.floor(num / refleshDiamond);
+  const refleshGridCount = refleshCount * gridCount;
+  const getCount = (goods: Goods) => {
+    return Math.floor(refleshGridCount * goods.probability);
+  };
+
+  const normalCount = getCount(normal);
+  const mysteryCount = getCount(mystery);
+
+  return {
+    normalCount,
+    mysteryCount,
+    gold: normalCount * normal.gold + mysteryCount * mystery.gold,
+  };
+};

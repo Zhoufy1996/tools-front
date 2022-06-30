@@ -4,7 +4,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useRouter } from 'next/router';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 interface DialAction {
   title: string;
   icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
@@ -22,6 +22,11 @@ const dialActions: {
     character: {
       title: '角色',
       icon: PersonAddIcon,
+    },
+
+    goods: {
+      title: '书签',
+      icon: BookmarkIcon,
     },
   },
   life: {
