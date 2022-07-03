@@ -1,8 +1,15 @@
 import localforage from 'localforage';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { menusData } from 'src/utils/menus';
 
-const validPaths = ['/life/memory', '/epic7/goods', '/epic7/character', '/epic7/equipment'];
+const validPaths: string[] = Object.entries(menusData)
+  .map(([module, data]) => {
+    return Object.keys(data).map((key) => {
+      return `/${module}/${key}`;
+    });
+  })
+  .flat();
 
 const NotFound = () => {
   const router = useRouter();
