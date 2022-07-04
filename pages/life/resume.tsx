@@ -1,4 +1,4 @@
-import { Box, Container, Link, Typography, Divider, Avatar, List, ListItemText, Button } from '@mui/material';
+import { Box, Container, Link, Typography, Divider, Avatar, List, ListItemText, Button, ListItem } from '@mui/material';
 import Image from 'next/image';
 import { useRef } from 'react';
 import Photo from 'src/assets/images/photo.jpg';
@@ -69,8 +69,8 @@ const Resume = () => {
         <Box>
           <List>
             <ListItemText>1. 熟悉HTML, / CSS / JavaScript等前端开发技术;</ListItemText>
-            <ListItemText>2. 熟悉React，了解Vue;</ListItemText>
-            <ListItemText>3. 了解Nodejs;</ListItemText>
+            <ListItemText>2. 熟悉React技术栈，了解Vue;</ListItemText>
+            <ListItemText>3. 了解Nodejs;了解chrome扩展开发;</ListItemText>
             <ListItemText>4. 使用Google / stackoverflow / CodeIf 等解决问题</ListItemText>
           </List>
         </Box>
@@ -79,27 +79,53 @@ const Resume = () => {
         <Typography variant="h5">工作经历</Typography>
         <Box>
           <List>
+            <ListItem>
+              <ListItemText>杭州连帆科技有限公司（2019.07 - 至今）</ListItemText>
+              <ListItemText>护理管理事业部/前端开发</ListItemText>
+            </ListItem>
+            <ListItemText>护理管理信息系统（2019.07 - 至今）</ListItemText>
+            <ListItemText>{`PC端 & 大屏`}</ListItemText>
+            <ListItemText>PC端：react + redux + ant design + fetch</ListItemText>
+            <ListItemText>大屏：flexable viewport等适配</ListItemText>
+            <ListItemText>安全问题：文件上传漏洞、敏感信息加密</ListItemText>
+            <ListItemText>nodejs脚本 pdf导出</ListItemText>
+            <ListItemText>module动态生成解决开发环境下打包、热重载过慢</ListItemText>
+            <ListItemText>plopjs自动生成模板代码</ListItemText>
+            <ListItemText>参与权限、菜单的设计</ListItemText>
+            <ListItemText>封装excel导出</ListItemText>
+            <ListItemText>解决大量的现场问题：缓存问题、表单配置问题等</ListItemText>
+            <ListItemText>在数百家医院上线</ListItemText>
+          </List>
+
+          <List>
+            <ListItemText>护理管理信息系统（2021.04 - 至今）</ListItemText>
+            <ListItemText>{`PC端`}</ListItemText>
+            <ListItemText>PC端：react + redux + ant design + fetch</ListItemText>
+            <ListItemText>独立开发</ListItemText>
             <ListItemText>
-              1. 熟悉HTML, / CSS / JavaScript等前端开发技术;得瑟得瑟得瑟得瑟得瑟大撒大撒大苏打阿斯顿
+              基于业务需求对ant design进行了二次封装，例如:权限判断组件、文件上传、护理单元选择框等
             </ListItemText>
-            <ListItemText>2. 熟悉React，了解Vue;得瑟得瑟得瑟得瑟得瑟大撒大撒大苏打阿斯顿</ListItemText>
-            <ListItemText>3. 了解Nodejs;得瑟得瑟得瑟得瑟得瑟大撒大撒大苏打阿斯顿</ListItemText>
-            <ListItemText>
-              4. 使用Google / stackoverflow / CodeIf 等解决问题得瑟得瑟得瑟得瑟得瑟大撒大撒大苏打阿斯顿
-            </ListItemText>
+            <ListItemText>已在三家医院上线</ListItemText>
           </List>
         </Box>
       </Box>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h5">项目经验</Typography>
-        {/* <Box>
+        <Box>
           <List>
-            <ListItemText>1. 熟悉HTML, / CSS / JavaScript等前端开发技术;</ListItemText>
-            <ListItemText>2. 熟悉React，了解Vue;</ListItemText>
-            <ListItemText>3. 了解Nodejs;</ListItemText>
-            <ListItemText>4. 使用Google / stackoverflow / CodeIf 等解决问题</ListItemText>
+            <ListItemText>EsjZone小说下载插件</ListItemText>
+            <ListItemText>chrome扩展插件</ListItemText>
           </List>
-        </Box> */}
+        </Box>
+
+        <Box>
+          <List>
+            <ListItemText>个人工具包</ListItemText>
+            <ListItemText>nextjs + nestjs</ListItemText>
+            <ListItemText>pwa应用</ListItemText>
+            <ListItemText>indexDb 保存图片 + 腾讯云 文字识别</ListItemText>
+          </List>
+        </Box>
       </Box>
     </Container>
   );
