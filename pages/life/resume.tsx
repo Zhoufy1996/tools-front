@@ -2,7 +2,6 @@ import { Box, Container, Link, Typography, Divider, Avatar, List, ListItemText, 
 import Image from 'next/image';
 import { useRef } from 'react';
 import Photo from 'src/assets/images/photo.jpg';
-import { saveFileAsPdf } from 'src/utils/pdf';
 
 const CustomDivider = () => {
   return <Divider orientation="vertical" flexItem sx={{ ml: 1, mr: 1 }} />;
@@ -87,25 +86,31 @@ const Resume = () => {
             <ListItemText>{`PC端 & 大屏`}</ListItemText>
             <ListItemText>PC端：react + redux + ant design + fetch</ListItemText>
             <ListItemText>大屏：flexable viewport等适配</ListItemText>
-            <ListItemText>对敏感信息进行加密、散列处理</ListItemText>
-            <ListItemText>nodejs脚本 pdf导出</ListItemText>
-            <ListItemText>module动态生成解决开发环境下打包、热重载过慢</ListItemText>
-            <ListItemText>plopjs自动生成模板代码</ListItemText>
-            <ListItemText>参与权限、菜单的设计</ListItemText>
-            <ListItemText>封装excel导出</ListItemText>
+            <ListItemText>对敏感信息进行AES/RSA加密、SHA散列处理</ListItemText>
+            <ListItemText>使用puppeteer实现pdf导出</ListItemText>
+            <ListItemText>模块减枝功能解决因项目过大而导致的开发环境下打包、热重载过慢的问题</ListItemText>
+            <ListItemText>参与新版权限模块的设计与开发</ListItemText>
             <ListItemText>解决大量的现场问题：缓存问题、表单配置问题等</ListItemText>
+            <ListItemText></ListItemText>
             <ListItemText>在数百家医院上线</ListItemText>
           </List>
 
           <List>
-            <ListItemText>护理管理信息系统（2021.04 - 至今）</ListItemText>
+            <ListItemText>云+护理管理集成平台（2022.04 - 至今）</ListItemText>
+            <ListItemText>{`PC端`}</ListItemText>
+            <ListItemText>独立开发</ListItemText>
+            <ListItemText>sso单点登录，使用iframe对多个应用进行集成，定时移除不活动的页面</ListItemText>
+          </List>
+
+          <List>
+            <ListItemText>层级管理信息系统（2021.04 - 至今）</ListItemText>
             <ListItemText>{`PC端`}</ListItemText>
             <ListItemText>PC端：react + redux + ant design + fetch</ListItemText>
             <ListItemText>独立开发</ListItemText>
             <ListItemText>
               基于业务需求对ant design进行了二次封装，例如:权限判断组件、文件上传、护理单元选择框等
             </ListItemText>
-            <ListItemText>已在三家医院上线</ListItemText>
+            <ListItemText>已在xx医院上线</ListItemText>
           </List>
         </Box>
       </Box>
