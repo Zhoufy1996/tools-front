@@ -26,6 +26,7 @@ const SpeedActions = () => {
           },
         }}
         icon={<SpeedDialIcon />}
+        className="print-hidden"
       >
         {Object.entries(actions).map(([key, action]) => {
           return (

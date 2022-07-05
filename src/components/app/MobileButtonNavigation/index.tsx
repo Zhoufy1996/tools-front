@@ -19,6 +19,7 @@ const MobileButtonNavigation = () => {
         zIndex: 999,
       }}
       elevation={3}
+      className="print-hidden"
     >
       <BottomNavigation
         showLabels

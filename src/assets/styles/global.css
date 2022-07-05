@@ -1,1 +1,10 @@
 @import "~react-image-gallery/styles/css/image-gallery.css";
+
+@media print {
+    .print-hidden {
+        display: none;
+    }
+    #__next > div {
+        padding-bottom: 0px;
+    }
+}
