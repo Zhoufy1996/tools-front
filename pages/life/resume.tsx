@@ -87,7 +87,7 @@ const Resume = () => {
             <ListItemText>{`PC端 & 大屏`}</ListItemText>
             <ListItemText>PC端：react + redux + ant design + fetch</ListItemText>
             <ListItemText>大屏：flexable viewport等适配</ListItemText>
-            <ListItemText>安全问题：文件上传漏洞、敏感信息加密</ListItemText>
+            <ListItemText>对敏感信息进行加密、散列处理</ListItemText>
             <ListItemText>nodejs脚本 pdf导出</ListItemText>
             <ListItemText>module动态生成解决开发环境下打包、热重载过慢</ListItemText>
             <ListItemText>plopjs自动生成模板代码</ListItemText>

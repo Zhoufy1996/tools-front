@@ -5,6 +5,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
 
 interface MenuItem {
   title: string;
@@ -36,6 +37,10 @@ export const menusData: Record<string, Record<string, MenuItem>> = {
     resume: {
       title: '简历',
       icon: PersonIcon,
+    },
+    sensitive: {
+      title: '加密/散列',
+      icon: LockIcon,
     },
   },
 };
