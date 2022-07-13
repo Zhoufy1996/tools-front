@@ -38,9 +38,9 @@ export const menusData: Record<string, Record<string, MenuItem>> = {
       title: '简历',
       icon: PersonIcon,
     },
-    sensitive: {
-      title: '加密/散列',
-      icon: LockIcon,
-    },
+    // sensitive: {
+    //   title: '加密/散列',
+    //   icon: LockIcon,
+    // },
   },
 };
