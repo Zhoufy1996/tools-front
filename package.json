@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fix-lint": "eslint --fix --ext .ts,.tsx ./src"
+    "fix-lint": "eslint --fix --ext .ts,.tsx ./src ./pages"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -34,6 +34,9 @@
     "node-rsa": "^1.1.1",
     "nodejs-jsencrypt": "^3.0.0-rc.1",
     "notistack": "^2.0.5",
+    "qiniu": "^7.7.0",
+    "qiniu-js": "^3.4.1",
+    "query-string": "^7.1.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-error-boundary": "^3.1.4",

@@ -12,7 +12,7 @@ const nextConfig = withPWA({
     mode: 'production',
   },
   images: {
-    domains: ['gchat.qpic.cn'],
+    domains: ['gchat.qpic.cn', 'avatars.githubusercontent.com'],
   },
 });
 

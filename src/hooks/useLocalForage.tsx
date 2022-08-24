@@ -1,7 +1,7 @@
 import localforage from 'localforage';
 import { useCallback, useEffect, useState } from 'react';
 
-const useLocalForage = <T,>(key: string, defaultValue: T): [T, (v: T | ((pre: T) => T)) => void] => {
+const useLocalForage = <T,>(key: string, defaultValue: T): [T, (v: T | ((pre: T) => T)) => void, boolean] => {
   const [state, setState] = useState<{ hasInit: boolean; data: T }>({
     hasInit: false,
     data: defaultValue,
@@ -15,6 +15,13 @@ const useLocalForage = <T,>(key: string, defaultValue: T): [T, (v: T | ((pre: T)
           setState({
             hasInit: true,
             data: data as T,
+          });
+        } else {
+          setState((pre) => {
+            return {
+              ...pre,
+              hasInit: true,
+            };
           });
         }
       });
@@ -48,7 +55,7 @@ const useLocalForage = <T,>(key: string, defaultValue: T): [T, (v: T | ((pre: T)
     }
   }, []);
 
-  return [state.data, onChange];
+  return [state.data, onChange, state.hasInit];
 };
 
 export default useLocalForage;

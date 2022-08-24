@@ -11,6 +11,6 @@ export interface EquipmentRecord {
 }
 
 export interface CharacterRecord {
-  imageBase64: string;
+  url: string;
   name: string;
 }
