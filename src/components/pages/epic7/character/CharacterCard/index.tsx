@@ -12,29 +12,27 @@ import { usePopupState, bindMenu, bindTrigger } from 'material-ui-popup-state/ho
 import PopoverButton from 'src/components/shared/PopoverButton';
 
 interface EquipmentCardProps {
-  uuid: string;
+  imageUrl: string;
   handleDelete: (uuid: string) => void;
-  setGallerDefaultUuid: (uuid: string) => void;
+  setGallerDefaultImageUrl: (uuid: string) => void;
 }
 
-const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCardProps) => {
+const CharacterCard = ({ imageUrl, handleDelete, setGallerDefaultImageUrl }: EquipmentCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const [state, setState] = useLocalForage<CharacterRecord>(uuid, {
-    imageBase64: '',
+  const [state, setState] = useLocalForage<CharacterRecord>(imageUrl, {
+    imageUrl,
     name: '',
   });
 
-  const { name, imageBase64 } = state;
-
-  const imgUrl = useObjectURL(imageBase64);
+  const { name } = state;
 
   const handleRead = useCallback(async () => {
     try {
       const data = await fetcher<GeneralAccurateOCRResponse['TextDetections']>('/api/ocr', {
         method: 'post',
         body: JSON.stringify({
-          imageBase64,
+          imageUrl,
         }),
       });
       setState((pre) => {
@@ -46,32 +44,22 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
     } catch (e) {
       console.log(e);
     }
-  }, [imageBase64, setState]);
+  }, [imageUrl, setState]);
 
   useEffect(() => {
-    if (!name && imageBase64) {
+    if (!name && imageUrl) {
       handleRead();
     }
-  }, [handleRead, name, imageBase64]);
-
-  if (imgUrl === '') {
-    return (
-      <Card sx={{ width: '100%', height: 200 }}>
-        <CardContent>
-          <Typography>图片读取中...</Typography>
-        </CardContent>
-      </Card>
-    );
-  }
+  }, [handleRead, name, imageUrl]);
 
   return (
     <Card sx={{ width: '100%' }}>
       <CardMedia
         onDoubleClick={() => {
-          setGallerDefaultUuid(uuid);
+          setGallerDefaultImageUrl(imageUrl);
         }}
         component="img"
-        image={imgUrl}
+        image={imageUrl}
         alt="图片"
       />
       <CardContent sx={{ minHeight: 70 }}>
@@ -117,26 +105,20 @@ const CharacterCard = ({ uuid, handleDelete, setGallerDefaultUuid }: EquipmentCa
           ]}
         />
         <ImageUpload
-          onChange={async (e) => {
-            if (!e.target.files || !e.target.files[0]) {
-              return;
-            }
-            const file = e.target.files[0];
-            const base64 = await readImageFileAsDataURL(file);
+          onOk={async (urls) => {
             setState((pre) => {
               return {
                 ...pre,
-                imageBase64: base64,
+                imageUrl: urls[0],
               };
             });
           }}
-          variant="text"
         />
         <Button
           size="small"
           color="error"
           onClick={() => {
-            handleDelete(uuid);
+            handleDelete(imageUrl);
           }}
           style={{ marginLeft: 'auto' }}
         >

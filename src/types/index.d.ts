@@ -6,11 +6,11 @@ export interface MemoryRecord {
 }
 
 export interface EquipmentRecord {
-  imageBase64: string;
+  imageUrl: string;
   parseString: string;
 }
 
 export interface CharacterRecord {
-  url: string;
+  imageUrl: string;
   name: string;
 }

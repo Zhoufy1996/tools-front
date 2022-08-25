@@ -87,3 +87,8 @@ export const fileSave = (text: string, title: string) => {
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' }) as any;
   saveAs(blob, `${title}.txt`);
 };
+
+export const getSuffix = (name: string) => {
+  const list = name.split('.');
+  return list[list.length - 1];
+};

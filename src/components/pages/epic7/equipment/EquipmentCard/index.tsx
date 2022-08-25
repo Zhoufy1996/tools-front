@@ -7,17 +7,17 @@ import useLocalForage from 'src/hooks/useLocalForage';
 import { EquipmentRecord } from 'src/types';
 
 interface EquipmentCardProps {
-  uuid: string;
+  imageUrl: string;
   handleDelete: (uuid: string) => void;
 }
 
-const EquipmentCard = ({ uuid, handleDelete }: EquipmentCardProps) => {
+const EquipmentCard = ({ imageUrl, handleDelete }: EquipmentCardProps) => {
   const [isReading, setIsReading] = useState(false);
-  const [state, setState] = useLocalForage<EquipmentRecord>(uuid, {
-    imageBase64: '',
+  const [state, setState] = useLocalForage<EquipmentRecord>(imageUrl, {
+    imageUrl,
     parseString: '',
   });
-  const { parseString, imageBase64 } = state;
+  const { parseString } = state;
 
   const handleRead = useCallback(async () => {
     try {
@@ -25,7 +25,7 @@ const EquipmentCard = ({ uuid, handleDelete }: EquipmentCardProps) => {
       const data = await fetcher<GeneralAccurateOCRResponse['TextDetections']>('/api/ocr', {
         method: 'post',
         body: JSON.stringify({
-          imageBase64,
+          imageUrl,
         }),
       });
 
@@ -35,14 +35,14 @@ const EquipmentCard = ({ uuid, handleDelete }: EquipmentCardProps) => {
         const text = `重铸前: ${transToText(attribute)}
 重铸后: ${transToText(recoinAttribute)}`;
         setState({
-          imageBase64,
+          imageUrl,
           parseString: text,
         });
       } else {
         const attribute = getAttributes(data);
         const text = transToText(attribute);
         setState({
-          imageBase64,
+          imageUrl,
           parseString: text,
         });
       }
@@ -51,27 +51,17 @@ const EquipmentCard = ({ uuid, handleDelete }: EquipmentCardProps) => {
     } finally {
       setIsReading(false);
     }
-  }, [imageBase64, setState]);
+  }, [imageUrl, setState]);
 
   useEffect(() => {
-    if (!parseString && imageBase64) {
+    if (!parseString && imageUrl) {
       handleRead();
     }
-  }, [handleRead, parseString, imageBase64]);
-
-  if (imageBase64 == '') {
-    return (
-      <Card sx={{ width: '100%', height: 200 }}>
-        <CardContent>
-          <Typography>图片读取中...</Typography>
-        </CardContent>
-      </Card>
-    );
-  }
+  }, [handleRead, parseString, imageUrl]);
 
   return (
     <Card sx={{ width: '100%' }}>
-      <CardMedia component="img" width="140" image={imageBase64} alt="图片" />
+      <CardMedia component="img" width="140" image={imageUrl} alt="图片" />
       <CardContent>
         {!isReading ? (
           <>
@@ -91,7 +81,7 @@ const EquipmentCard = ({ uuid, handleDelete }: EquipmentCardProps) => {
         <Button onClick={handleRead} size="small">
           识别
         </Button>
-        <Button color="secondary" onClick={() => handleDelete(uuid)} size="small">
+        <Button color="secondary" onClick={() => handleDelete(imageUrl)} size="small">
           移除
         </Button>
       </CardActions>

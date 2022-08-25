@@ -1,13 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import fetch from 'node-fetch';
-import queryString from 'query-string';
 import * as qiniu from 'qiniu';
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
-  var mac = new qiniu.auth.digest.Mac(qiniuK.AK, qiniuK.SK);
+  var mac = new qiniu.auth.digest.Mac(process.env.QINIU_AK, process.env.QINIU_SK);
 
   var options = {
-    scope: bucket,
+    scope: process.env.QINIU_OSS_BUCKET,
     expires: 72000,
   };
 

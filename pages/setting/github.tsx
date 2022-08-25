@@ -1,47 +1,70 @@
-import { Button, Container } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
-import { getGithubToken, githubOptions } from 'src/utils/github';
-import { useRouter } from 'next/router';
+import { Container } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { fetcher } from 'src/utils/fetcher';
 import useLocalForage from 'src/hooks/useLocalForage';
-import Image from 'next/image';
 import EditInput from 'src/components/app/EditInput';
 
 const GithubSetting = () => {
-  const [accessToken, setAccessToken, hasInit] = useLocalForage('github_access_token', '');
+  const [token, setToken, tokenHasInit] = useLocalForage('githubToken', '');
   const [gistId, setGistId, gistHasInit] = useLocalForage('gistId', '');
-  const [profile, setProfile] = useState<{
+  const [repo, setRepo, repoHasInit] = useLocalForage('repo', '');
+  const [profile, setProfile] = useLocalForage<{
     avatar_url: string;
     login: string;
-  } | null>(null);
+  } | null>('profile', null);
 
   useEffect(() => {
-    if (accessToken) {
+    if (token) {
       fetcher<any>('https://api.github.com/user', {
         headers: {
-          Authorization: `token ${accessToken}`,
+          Authorization: `token ${token}`,
           accept: 'application/vnd.github.v3+json',
         },
       }).then((res) => {
-        setProfile(res);
+        setProfile({
+          avatar_url: res.avatar_url,
+          login: res.login,
+        });
       });
     }
-  }, [accessToken]);
+  }, [token, setProfile]);
+
+  useEffect(() => {
+    if (token && repo && profile?.login) {
+      fetcher<any>(`https://api.github.com/repos/${profile.login}/${repo}`, {
+        headers: {
+          Authorization: `token ${token}`,
+          accept: 'application/vnd.github.v3+json',
+        },
+      }).then((res) => {
+        // setProfile(res);
+      });
+    }
+  }, [token, repo, profile]);
 
   return (
     <Container sx={{ p: 1 }}>
-      {profile ? (
-        <div>
-          <Image width={80} height={80} src={profile.avatar_url} alt={profile.login} />
-        </div>
-      ) : (
-        <Button onClick={getGithubToken}>login</Button>
+      {tokenHasInit && (
+        <EditInput
+          defaultValue={token}
+          onOk={(v) => {
+            setToken(v);
+          }}
+        />
       )}
       {gistHasInit && (
         <EditInput
           defaultValue={gistId}
           onOk={(v) => {
             setGistId(v);
+          }}
+        />
+      )}
+      {repoHasInit && (
+        <EditInput
+          defaultValue={repo}
+          onOk={(v) => {
+            setRepo(v);
           }}
         />
       )}

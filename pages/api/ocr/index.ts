@@ -5,8 +5,8 @@ const OcrClient = tencentcloud.ocr.v20181119.Client;
 
 const client = new OcrClient({
   credential: {
-    secretId: process.env.SECRETID,
-    secretKey: process.env.SECRETKEY,
+    secretId: process.env.TX_OCR_SECRETID,
+    secretKey: process.env.TX_OCR_SECRETKEY,
   },
   region: 'ap-beijing',
   profile: {
