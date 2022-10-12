@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fix-lint": "eslint --fix --ext .ts,.tsx ./src"
+    "fix-lint": "eslint --fix --ext .ts,.tsx ./src ./pages"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",

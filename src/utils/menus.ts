@@ -13,19 +13,9 @@ interface MenuItem {
 }
 
 export const menusData: Record<string, Record<string, MenuItem>> = {
-  epic7: {
-    equipment: {
-      title: '装备',
-      icon: AddPhotoAlternateIcon,
-    },
-
-    character: {
-      title: '角色',
-      icon: PersonAddIcon,
-    },
-
-    goods: {
-      title: '书签',
+  games: {
+    epic7: {
+      title: '第七史诗',
       icon: BookmarkIcon,
     },
   },

@@ -32,7 +32,7 @@ const MobileButtonNavigation = () => {
         }}
       >
         <BottomNavigationAction value="/life" label="日常" />
-        <BottomNavigationAction value="/epic7" label="第七史诗" />
+        <BottomNavigationAction value="/games" label="游戏" />
       </BottomNavigation>
     </Paper>
   );
